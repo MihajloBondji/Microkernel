@@ -9,6 +9,7 @@
 #include "SCHEDULE.h"
 #include "pcb.h"
 #include "thread.h"
+#include "idle.h"
 
 void tick();
 unsigned tmpsp=0;
@@ -68,4 +69,21 @@ void interrupt Context::timer(...) {
 		#endif
 		}
 
+}
+
+void Context::init() {
+	PCB::main = (new Thread(150, 5))->getMyPCB();
+	PCB::main->setMyThreadState(PCB::RUNNING);
+	PCB::running = PCB::main;
+	PCB::idle = (new Idle())->getMyPCB();
+	PCB::idle->setMyThreadState(PCB::IDLE);
+	timeleft = PCB::main->getMyThreadTimeSlice();
+
+#ifndef BCC_BLOCK_IGNORE
+	asm {pushf;cli};
+	timerRoutine = getvect(0x08);
+	setvect(0x08,timer);
+	setvect(0x60,timerRoutine);
+	asm {popf};
+#endif
 }

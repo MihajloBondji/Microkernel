@@ -62,3 +62,8 @@ void dispatch() {
 	asm int 0x08
 #endif
 }
+
+
+PCB* Thread::getMyPCB(){
+	return this->myPCB;
+}

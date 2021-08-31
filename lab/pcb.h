@@ -25,6 +25,8 @@ public:
 	 friend class List;
 	 static List* listAll;
 
+	 static void wrapper();
+
 	enum state{CREATED,BLOCKED,STARTED,DELETED,READY,RUNNING,IDLE};
 	//getters
 	void setMyThreadState(state s);

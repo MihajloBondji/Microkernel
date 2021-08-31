@@ -19,7 +19,7 @@ public:
 
 static void init();
 static void restore();
-protected:
+
 friend class PCB;
 friend class Thread;
 };

@@ -27,8 +27,10 @@ public:
 protected:
  friend class PCB;
  friend class List;
+ friend class Context;
  Thread (StackSize stackSize = defaultStackSize, Time timeSlice = defaultTimeSlice);
  virtual void run() {}
+ PCB* getMyPCB();
 
  List* myWaitingList;
 private:

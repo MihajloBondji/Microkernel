@@ -1,5 +1,18 @@
-#include "../h/thread.h"
-#include "../h/declare.h"
+#include "thread.h"
+#include "pcb.h"
+#include <DOS.H>
+#include <STDIO.H>
+#include <STDARG.H>
+
+int syncPrintf(const char *format, ...)
+{
+	int res;
+	va_list args;
+		va_start(args, format);
+	res = vprintf(format, args);
+	va_end(args);
+		return res;
+}
 
 /*
 	Test: cekanje niti

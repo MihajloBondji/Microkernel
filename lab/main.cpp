@@ -9,7 +9,7 @@
 #include "pcb.h"
 #include <iostream.h>
 
-extern int userMain(int argc, char **argv){}
+extern int userMain(int argc, char **argv);
 
 int main(int argc, char**argv){
 cout<<"Start\n";

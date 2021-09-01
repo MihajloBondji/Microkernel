@@ -11,7 +11,7 @@
 #include "thread.h"
 #include "idle.h"
 
-extern void tick(){}
+extern void tick();
 unsigned tmpsp=0;
 unsigned tmpss=0;
 unsigned tmpbp=0;

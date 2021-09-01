@@ -11,7 +11,7 @@ public:
  Semaphore (int init=1);
 virtual ~Semaphore ();
  virtual int wait (Time maxTimeToWait);
- virtual void signal();
+ virtual int signal();
  int val () const; // Returns the current value of the semaphore
 
 private:

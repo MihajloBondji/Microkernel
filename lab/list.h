@@ -7,7 +7,7 @@
 
 #ifndef LIST_H_
 #define LIST_H_
-
+#include "thread.h"
 class List{
 public:
 	List();
@@ -19,10 +19,11 @@ public:
 	struct pcbelem{
 		PCB* data;
 		pcbelem* next;
-
-		pcbelem(PCB* d){
+		Time maxWait;
+		pcbelem(PCB* d,Time mw=0){
 			data=d;
 			next=0;
+			maxWait=mw;
 		}
 	};
 
@@ -31,7 +32,6 @@ public:
 
 	void add(PCB* pcb);
 	PCB* get(int id);
-	void listDel();
 	void freeBlocked();
 	void remove();
 	void remove(int id);

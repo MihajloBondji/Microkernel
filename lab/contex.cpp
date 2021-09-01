@@ -11,10 +11,11 @@
 #include "thread.h"
 #include "idle.h"
 
-void tick();
+extern void tick(){}
 unsigned tmpsp=0;
 unsigned tmpss=0;
 unsigned tmpbp=0;
+interruptPointer Context::timerRoutine;
 volatile int Context::request=0;
 volatile int Context::timeleft=0;
 
@@ -86,4 +87,18 @@ void Context::init() {
 	setvect(0x60,timerRoutine);
 	asm {popf};
 #endif
+}
+
+void Context::restore() {
+#ifndef BCC_BLOCK_IGNORE
+	asm cli
+	setvect(0x08,timerRoutine);
+	asm sti
+#endif
+	delete PCB::idle->getMyThread();
+	delete PCB::main->getMyThread();
+	PCB::idle = 0;
+	PCB::main = 0;
+	PCB::listAll = 0;
+	PCB::running = 0;
 }

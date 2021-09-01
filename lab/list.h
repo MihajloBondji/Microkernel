@@ -34,6 +34,7 @@ public:
 	void listDel();
 	void freeBlocked();
 	void remove();
+	void remove(int id);
 	void deleteList();
 };
 

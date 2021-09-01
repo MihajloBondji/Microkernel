@@ -40,9 +40,21 @@ Time PCB::getMyThreadTimeSlice(){
 	return this->myThreadTimeSlice;
 }
 
+ID PCB::getThreadId(){
+	return this->threadId;
+}
+
 PCB::~PCB(){
-  myThread->myPCB = 0;
-  //PCB::getPCBList()->remove(this);
+  PCB::listAll->remove(this->getThreadId());
+  if(stack!=0) delete stack;
+  this->myThreadState = DELETED;
+  deletePointers();
+}
+
+void PCB::deletePointers(){
+	if(myThread!=0) myThread->myPCB = 0;
+	myThread = 0;
+	stack=0;
 }
 
 void PCB::setMyThreadState(PCB::state s){
@@ -53,4 +65,7 @@ void PCB::wrapper() {
 	PCB::running->myThread->run();
 	PCB::running->listAll->freeBlocked();
 	dispatch();
+}
+Thread* PCB::getMyThread(){
+	return this->myThread;
 }

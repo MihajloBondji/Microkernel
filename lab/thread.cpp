@@ -42,22 +42,23 @@ Thread * Thread::getThreadById(ID id){
 }
 
 Thread::~Thread() {
-	if (myPCB != 0) {
-		//myPCB->waitToComplete();
+	if (this->myPCB != 0) {
+		this->waitToComplete();
 		myPCB->myThread = 0;
-		delete myPCB;
-		myPCB = 0;
+		delete this->myPCB;
+		this->myPCB = 0;
 	}
 }
 
 void Thread::waitToComplete(){
-
+	if (this->myPCB == PCB::running||this->myPCB == PCB::main||this->myPCB == PCB::idle||this->myPCB->myThreadState == PCB::DELETED||this->myPCB->myThreadState == PCB::CREATED)
+		return;
 	this->myWaitingList->add(PCB::running);
 	PCB::running->myThreadState=PCB::BLOCKED;
 	dispatch();
 }
 void dispatch() {
-	//Context::preemptionOnRequest = 1;
+	Context::request = 1;
 #ifndef BCC_BLOCK_IGNORE
 	asm int 0x08
 #endif

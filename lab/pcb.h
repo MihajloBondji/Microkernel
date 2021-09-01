@@ -29,8 +29,10 @@ public:
 
 	enum state{CREATED,BLOCKED,STARTED,DELETED,READY,RUNNING,IDLE};
 	//getters
+	Thread* getMyThread();
 	void setMyThreadState(state s);
 	Time getMyThreadTimeSlice();
+	ID getThreadId();
 protected:
 	friend class Thread;
 	friend class List;
@@ -43,7 +45,7 @@ protected:
 private:
 	ID threadId;
 	StackSize myThreadStackSize;
-
+	void deletePointers();
 	//State myThreadState;
 };
 

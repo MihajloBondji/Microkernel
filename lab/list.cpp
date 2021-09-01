@@ -40,6 +40,35 @@ void List::remove(){
 	else first=first->next;
 	delete pom;
 }
+
+void List::remove(int id){
+	pcbelem* pom=first;
+	if(first->data->getThreadId()==id)
+	{
+		if(first==last)
+			first=last=0;
+		else
+		first=first->next;
+		delete pom;
+		return;
+	}
+	pom=first->next;
+	pcbelem* pret=first;
+	while(pom)
+	{
+		if(pom->data->getThreadId()==id)
+			{
+				pret->next=pom->next;
+				if(pom==last)
+					last=pret;
+				delete pom;
+				return;
+			}
+		pret=pom;
+		pom=pom->next;
+	}
+}
+
 void List::freeBlocked(){
 	if(!first) return;
 	for(pcbelem* tek =first; tek; tek=tek->next){

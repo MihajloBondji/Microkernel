@@ -22,7 +22,7 @@ volatile int Context::timeleft=0;
 void interrupt Context::timer(...) {
 
 	if((request==0)&&timeleft>=0)
-		timeleft=0;
+		timeleft--;
 	if(timeleft==0||request)
 	{
 #ifndef BCC_BLOCK_IGNORE
@@ -46,7 +46,7 @@ void interrupt Context::timer(...) {
 		if ((PCB::running = Scheduler::get()) != 0)
 			PCB::running->setMyThreadState(PCB::RUNNING);
 		else{
-			//PCB::running = PCB::idlePCB;
+			PCB::running = PCB::idle;
 			PCB::running->setMyThreadState(PCB::IDLE);
 		}
 
@@ -69,7 +69,7 @@ void interrupt Context::timer(...) {
 				tick();
 		#endif
 		}
-
+		request=0;
 }
 
 void Context::init() {
@@ -81,11 +81,11 @@ void Context::init() {
 	timeleft = PCB::main->getMyThreadTimeSlice();
 
 #ifndef BCC_BLOCK_IGNORE
-	asm {pushf;cli};
+	//asm {pushf;cli};
 	timerRoutine = getvect(0x08);
 	setvect(0x08,timer);
 	setvect(0x60,timerRoutine);
-	asm {popf};
+	//asm {popf};
 #endif
 }
 

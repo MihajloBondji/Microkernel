@@ -53,7 +53,7 @@ Thread::~Thread() {
 void Thread::waitToComplete(){
 	if (this->myPCB == PCB::running||this->myPCB == PCB::main||this->myPCB == PCB::idle||this->myPCB->myThreadState == PCB::DELETED||this->myPCB->myThreadState == PCB::CREATED)
 		return;
-	this->myWaitingList->add(PCB::running);
+	this->myWaitingList->add((PCB*)PCB::running);
 	PCB::running->myThreadState=PCB::BLOCKED;
 	dispatch();
 }

@@ -32,7 +32,7 @@ PCB::PCB(Thread* t,StackSize ss,Time ts):myThread(t),myThreadTimeSlice(ts){
 		Context.sp = FP_OFF(stack + myThreadStackSize - 12);
 		Context.ss = FP_SEG(stack + myThreadStackSize - 12);
 	#endif
-
+		this->stack=stack;
 		this->listAll->add(this);
 }
 

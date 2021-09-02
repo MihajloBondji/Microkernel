@@ -8,11 +8,10 @@
 #include "KerSem.h"
 
 Semaphore::Semaphore(int i) {
-myImpl = new KernelSem(this,i);
+	this->myImpl = new KerSem(i);
 }
 
 Semaphore::~Semaphore() {
-	myImpl->mySem = 0;
 	delete myImpl;
 	myImpl = 0;
 }

@@ -15,15 +15,17 @@ public:
 
 	friend class PCB;
 	friend class Thread;
-
+	enum wait{ZERO,TIME};
 	struct pcbelem{
 		PCB* data;
 		pcbelem* next;
 		Time maxWait;
+		wait myWaitState;
 		pcbelem(PCB* d,Time mw=0){
 			data=d;
 			next=0;
 			maxWait=mw;
+			myWaitState=(mw==0?ZERO:TIME);
 		}
 	};
 
@@ -36,6 +38,7 @@ public:
 	void remove();
 	void remove(int id);
 	void deleteList();
+
 };
 
 

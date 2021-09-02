@@ -7,19 +7,25 @@
 #include "listsem.h"
 #include "kersem.h"
 
+ListSem::ListSem() {
+	first=0;
+	last=0;
+}
+
+
 void ListSem::add(KerSem* sem){
 	if(first)
 		{
-			last->next=new pcbelem(sem);
+			last->next=new kerelem(sem);
 			last=last->next;
 		}
 	else {
-		first=last=new pcbelem(sem);
+		first=last=new kerelem(sem);
 	}
 }
 
 void ListSem::remove(KerSem* sem){
-	pcbelem* pom=first;
+	kerelem* pom=first;
 	if(first->data==sem)
 	{
 		if(first==last)
@@ -30,7 +36,7 @@ void ListSem::remove(KerSem* sem){
 		return;
 	}
 	pom=first->next;
-	pcbelem* pret=first;
+	kerelem* pret=first;
 	while(pom)
 	{
 		if(pom->data==sem)
@@ -49,7 +55,7 @@ void ListSem::remove(KerSem* sem){
 KerSem* ListSem::getAndRemove() {
 	if(first==0) return 0;
 
-	pcbelem* pom=first;
+	kerelem* pom=first;
 	while(pom)
 		{
 			if(pom->data==this)
@@ -61,4 +67,20 @@ KerSem* ListSem::getAndRemove() {
 			else pom=pom->next;
 		}
 	return 0;
+}
+
+void ListSem::deleteList(){
+	kerelem* pom = 0;
+		while(first){
+			pom=first;
+			first=first->next;
+			pom->data = 0;
+			pom->next=0;
+			delete pom;
+		}
+		first = last = 0;
+}
+
+ListSem::~ListSem() {
+	deleteList();
 }

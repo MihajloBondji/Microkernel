@@ -72,8 +72,10 @@ void List::remove(int id){
 void List::freeBlocked(){
 	if(!first) return;
 	for(pcbelem* tek =first; tek; tek=tek->next){
-		tek->data->myThreadState = PCB::READY;
-		Scheduler::put(tek->data);
+		if(tek->data->myThreadState!=PCB::DONE){
+			tek->data->myThreadState = PCB::READY;
+			Scheduler::put(tek->data);
+		}
 	}
 
 }

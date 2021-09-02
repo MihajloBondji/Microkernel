@@ -32,6 +32,7 @@ PCB::PCB(Thread* t,StackSize ss,Time ts):myThread(t),myThreadTimeSlice(ts){
 		Context.sp = FP_OFF(stack + myThreadStackSize - 12);
 		Context.ss = FP_SEG(stack + myThreadStackSize - 12);
 	#endif
+		this->threadId=myThread->getId();
 		this->stack=stack;
 		this->listAll->add(this);
 }
@@ -64,6 +65,7 @@ void PCB::setMyThreadState(PCB::state s){
 void PCB::wrapper() {
 	PCB::running->myThread->run();
 	PCB::running->listAll->freeBlocked();
+	PCB::running->myThreadState=DONE;
 	dispatch();
 }
 Thread* PCB::getMyThread(){

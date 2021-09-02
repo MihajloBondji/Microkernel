@@ -14,23 +14,22 @@ public:
 	ListSem();
 	virtual ~ListSem();
 
-	struct pcbelem{
+	struct kerelem{
 		KerSem* data;
-		pcbelem* next;
-		pcbelem(KerSem* d){
+		kerelem* next;
+		kerelem(KerSem* d){
 			data=d;
 			next=0;
 		}
 	};
 
-	pcbelem *first;
-	pcbelem *last;
+	kerelem *first;
+	kerelem *last;
 
 	void add(KerSem* sem);
 	KerSem* getAndRemove();
 	void remove(KerSem*);
 	void deleteList();
-	static void updateTime(ListSem* semaphoresList);
 };
 
 

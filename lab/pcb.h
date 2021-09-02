@@ -27,7 +27,7 @@ public:
 
 	 static void wrapper();
 
-	enum state{CREATED,BLOCKED,STARTED,DELETED,READY,RUNNING,IDLE};
+	enum state{CREATED,BLOCKED,STARTED,DELETED,READY,RUNNING,IDLE,DONE};
 	//getters
 	Thread* getMyThread();
 	void setMyThreadState(state s);

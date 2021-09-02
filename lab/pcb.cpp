@@ -35,6 +35,7 @@ PCB::PCB(Thread* t,StackSize ss,Time ts):myThread(t),myThreadTimeSlice(ts){
 		this->threadId=myThread->getId();
 		this->stack=stack;
 		this->listAll->add(this);
+		this->imFromWaitTimeOut=0;
 }
 
 Time PCB::getMyThreadTimeSlice(){

@@ -37,11 +37,13 @@ protected:
 	friend class Thread;
 	friend class List;
 	friend class Contex;
+	friend class KerSem;
 	Time myThreadTimeSlice;
 	PCB(Thread* thread, StackSize stackSize, Time timeSlice);
 	~PCB();
 	state myThreadState;
 	Thread *myThread;
+	int imFromWaitTimeOut;
 private:
 	ID threadId;
 	StackSize myThreadStackSize;

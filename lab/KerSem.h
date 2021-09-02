@@ -19,6 +19,7 @@ public:
 	static void updateTime();
 	void updateTime2();
 protected:
+	friend class PCB;
 	KerSem(int val);
 	~KerSem();
 	int getVal();

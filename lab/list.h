@@ -35,7 +35,7 @@ public:
 	void add(PCB* pcb);
 	PCB* get(int id);
 	void freeBlocked();
-	void remove();
+	PCB* remove();
 	void remove(int id);
 	void deleteList();
 

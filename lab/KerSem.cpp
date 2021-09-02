@@ -37,7 +37,22 @@ int KerSem::wait(Time maxWait){
 }
 
 int KerSem::signal(int n){
-
+	if(n<0)return n;
+	if(n==0)
+		n=1;
+	int j=0;
+	if(value<0)
+	{
+		j = ( (n > -1 * value) ? -1 * value : n );
+		for(int i=0;i<j;i++)
+		{
+			PCB* pom=this->blockedThreadsList->remove();
+			pom->myThreadState = PCB::READY;
+			Scheduler::put(pom);
+		}
+	}
+	value+=n;
+	return j;
 }
 
 KerSem::~KerSem(){

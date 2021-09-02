@@ -10,6 +10,7 @@
 #include "pcb.h"
 #include "thread.h"
 #include "idle.h"
+#include "KerSem.h"
 
 extern void tick();
 unsigned tmpsp=0;
@@ -20,7 +21,7 @@ volatile int Context::request=0;
 volatile int Context::timeleft=0;
 
 void interrupt Context::timer(...) {
-
+	KerSem::updateTime();
 	if((request==0)&&timeleft>=0)
 		timeleft--;
 	if(timeleft==0||request)

@@ -39,8 +39,10 @@ void interrupt Context::timer(...) {
 		PCB::running->Context.sp = tmpsp;
 		PCB::running->Context.ss = tmpss;
 		PCB::running->Context.bp = tmpbp;
-		PCB::running->setMyThreadState(PCB::READY);
-		Scheduler::put((PCB *) PCB::running);
+		if (PCB::running->getMyThreadState() == PCB::RUNNING) {
+			PCB::running->setMyThreadState(PCB::READY);
+			Scheduler::put((PCB *) PCB::running);
+		}
 	}
 
 
@@ -82,11 +84,11 @@ void Context::init() {
 	timeleft = PCB::main->getMyThreadTimeSlice();
 
 #ifndef BCC_BLOCK_IGNORE
-	//asm {pushf;cli};
+	asm {pushf;cli};
 	timerRoutine = getvect(0x08);
 	setvect(0x08,timer);
 	setvect(0x60,timerRoutine);
-	//asm {popf};
+	asm {popf};
 #endif
 }
 

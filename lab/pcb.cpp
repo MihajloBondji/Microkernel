@@ -41,7 +41,9 @@ PCB::PCB(Thread* t,StackSize ss,Time ts):myThread(t),myThreadTimeSlice(ts){
 Time PCB::getMyThreadTimeSlice(){
 	return this->myThreadTimeSlice;
 }
-
+PCB::state PCB::getMyThreadState(){
+	return this->myThreadState;
+}
 ID PCB::getThreadId(){
 	return this->threadId;
 }

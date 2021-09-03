@@ -14,10 +14,12 @@
 
 KernelEv::KernelEv(IVTNo ivtNo):ivtNo(ivtNo) {
 #ifndef BCC_BLOCK_IGNORE
+	asm {pushf;cli};
 	owner =(PCB * ) PCB::running;
 	ownerBlocked = 0;
     if(IVTEntry::ivtEntry==0) {}
     else IVTEntry::ivtEntry[ivtNo]->setEvent(this);
+    asm {popf};
 #endif
 }
 
@@ -40,11 +42,15 @@ void KernelEv::signal() {
 }
 
 KernelEv::~KernelEv() {
+#ifndef BCC_BLOCK_IGNORE
+	asm {pushf;cli};
 	setOwnerBlocked(0);
 	owner = 0;
 	if(IVTEntry::ivtEntry!=0 && IVTEntry::ivtEntry[ivtNo] !=0)
 		IVTEntry::ivtEntry[ivtNo]->setEvent(0);
 	ivtNo = 0;
+	asm {popf};
+#endif
 }
 
 void KernelEv::setOwnerBlocked(int i){this->ownerBlocked=i;}

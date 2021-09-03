@@ -16,25 +16,35 @@ IVTEntry::IVTEntry(IVTNo ivtNo,interruptPointer routine){
 
 myKernelEvent = 0;
 #ifndef BCC_BLOCK_IGNORE
+asm {pushf;cli};
 defaultRoutine = getvect(ivtNo);
 setvect(ivtNo,routine);
 
 ivtEntry[ivtNo] = this;
 this->ivtNo = ivtNo;
+asm {popf};
 #endif
 }
 
 void IVTEntry::setEvent(KernelEv* kernelEvent) {
+#ifndef BCC_BLOCK_IGNORE
+	asm {pushf;cli};
+#endif
 	this->myKernelEvent = kernelEvent;
+#ifndef BCC_BLOCK_IGNORE
+	asm {popf};
+#endif
 }
 
 IVTEntry::~IVTEntry() {
 #ifndef BCC_BLOCK_IGNORE
+	asm {pushf;cli};
 	setvect(ivtNo, defaultRoutine);
 	defaultRoutine = 0;
 	myKernelEvent = 0;
 	if(ivtEntry!=0) ivtEntry[ivtNo] = 0;
 	ivtNo = 0;
+	asm {popf};
 	#endif
 }
 void IVTEntry::signal() {

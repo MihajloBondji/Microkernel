@@ -15,18 +15,14 @@ int syncPrintf(const char *format, ...)
 }
 
 /*
-	Test: cekanje niti
+	Test: asinhrono preuzimanje
 */
-
-const int n = 16;
-
-void tick(){}
 
 class TestThread : public Thread
 {
 public:
 
-	TestThread(): Thread(4096,2) {};
+	TestThread(): Thread() {};
 	~TestThread()
 	{
 		waitToComplete();
@@ -39,39 +35,37 @@ protected:
 
 void TestThread::run()
 {
-
-	int buffer=2;
+	syncPrintf("Thread %d: loop1 starts\n", getId());
 
 	for(int i=0;i<32000;i++)
 	{
-		buffer = 4096/2048;
-		for (int j = 0; j < 1024; j++)
-		{
-			buffer = buffer*2;
-			if(buffer%2)
-				buffer = 2;
-		}
+		for (int j = 0; j < 32000; j++);
 	}
+
+	syncPrintf("Thread %d: loop1 ends, dispatch\n",getId());
+
+	dispatch();
+
+	//syncPrintf("Thread %d: loop2 starts\n",getId());
+
+	for (int k = 0; k < 20000; k++);
+
+	syncPrintf("Thread %d: loop2 ends\n",getId());
 
 }
 
 
+
+void tick(){}
+
 int userMain(int argc, char** argv)
 {
-	syncPrintf("Test starts: %d threads.\n",n);
-	int i;
-	TestThread threads[n];
-	for(i=0;i<n;i++)
-	{
-		threads[i].start();
-	}
-	for(i=0;i<n;i++)
-	{
-		threads[i].waitToComplete();
-		syncPrintf("%d. Done!\n",Thread::getThreadById(i+3)->getId());
-	}
-	syncPrintf("Test ends.\n");
-	return 0;
+	syncPrintf("User main starts\n");
+	TestThread t1,t2;
+	t1.start();
+	t2.start();
+	syncPrintf("User main ends\n");
+	return 16;
 }
 
 

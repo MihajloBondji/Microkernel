@@ -33,6 +33,7 @@ public:
 	void setMyThreadState(state s);
 	Time getMyThreadTimeSlice();
 	ID getThreadId();
+	state getMyThreadState();
 protected:
 	friend class Thread;
 	friend class List;

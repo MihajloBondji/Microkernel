@@ -22,9 +22,14 @@ KerSem::KerSem(int val):value(val){
 int KerSem::wait(Time maxWait){
 	value--;
 	if(value>=0) return -1;
-
+#ifndef BCC_BLOCK_IGNORE
+		asm {pushf;cli};
+#endif
 	PCB::running->setMyThreadState(PCB::BLOCKED);
 	this->blockedThreadsList->add(PCB::running);
+#ifndef BCC_BLOCK_IGNORE
+		asm {popf};
+#endif
 	if(maxWait!=0)
 		PCB::running->imFromWaitTimeOut=1;
 	dispatch();
@@ -44,12 +49,18 @@ int KerSem::signal(int n){
 	if(value<0)
 	{
 		j = ( (n > -1 * value) ? -1 * value : n );
+#ifndef BCC_BLOCK_IGNORE
+		asm {pushf;cli};
+#endif
 		for(int i=0;i<j;i++)
 		{
 			PCB* pom=this->blockedThreadsList->remove();
 			pom->myThreadState = PCB::READY;
 			Scheduler::put(pom);
 		}
+#ifndef BCC_BLOCK_IGNORE
+		asm {popf};
+#endif
 	}
 	value+=n;
 	return j;
@@ -57,7 +68,13 @@ int KerSem::signal(int n){
 
 KerSem::~KerSem(){
 	listAllSem->remove(this);
+#ifndef BCC_BLOCK_IGNORE
+		asm {pushf;cli};
+#endif
 	blockedThreadsList->freeBlocked();
+#ifndef BCC_BLOCK_IGNORE
+		asm {popf};
+#endif
 	delete blockedThreadsList;
 	value=0;
 }

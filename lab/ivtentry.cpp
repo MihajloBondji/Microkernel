@@ -40,12 +40,12 @@ IVTEntry::~IVTEntry() {
 #ifndef BCC_BLOCK_IGNORE
 	asm {pushf;cli};
 	setvect(ivtNo, defaultRoutine);
-	defaultRoutine = 0;
-	myKernelEvent = 0;
-	if(ivtEntry!=0) ivtEntry[ivtNo] = 0;
-	ivtNo = 0;
+	if(ivtEntry) ivtEntry[ivtNo] = 0;
+	if(ivtNo!=0)ivtNo = 0;
 	asm {popf};
 	#endif
+	if(defaultRoutine!=0)defaultRoutine = 0;
+	if(myKernelEvent!=0)myKernelEvent = 0;
 }
 void IVTEntry::signal() {
 	if(myKernelEvent == 0) return;

@@ -45,10 +45,15 @@ KernelEv::~KernelEv() {
 #ifndef BCC_BLOCK_IGNORE
 	asm {pushf;cli};
 	setOwnerBlocked(0);
-	owner = 0;
-	if(IVTEntry::ivtEntry!=0 && IVTEntry::ivtEntry[ivtNo] !=0)
-		IVTEntry::ivtEntry[ivtNo]->setEvent(0);
-	ivtNo = 0;
+	if(owner!=0)owner = 0;
+	if(IVTEntry::ivtEntry==0 || IVTEntry::ivtEntry[ivtNo] ==0){
+		if(ivtNo!=0)ivtNo = 0;
+	}
+	else
+		{
+			IVTEntry::ivtEntry[ivtNo]->setEvent(0);
+			if(ivtNo!=0)ivtNo = 0;
+		}
 	asm {popf};
 #endif
 }

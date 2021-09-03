@@ -32,15 +32,17 @@ PCB* List::get(int id=0) {
 }
 
 PCB* List::remove(){
-	if(!first) return 0;
-
+	if(first!=0){
 	pcbelem* pom=first;
 	PCB* pompcb=pom->data;
-	if(first->next==0)
-		first=last=0;
-	else first=first->next;
+	if(first->next!=0)
+		first=first->next;
+	else first=last=0;
 	delete pom;
 	return pompcb;
+	}
+	else
+	return 0;
 }
 
 void List::remove(int id){

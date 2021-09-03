@@ -71,14 +71,15 @@ KerSem* ListSem::getAndRemove() {
 
 void ListSem::deleteList(){
 	kerelem* pom = 0;
-		while(first){
+		while(first!=0){
 			pom=first;
 			first=first->next;
 			pom->data = 0;
 			pom->next=0;
 			delete pom;
 		}
-		first = last = 0;
+		first = 0;
+		last = 0;
 }
 
 ListSem::~ListSem() {

@@ -22,8 +22,15 @@ volatile int Context::timeleft=0;
 
 void interrupt Context::timer(...) {
 	KerSem::updateTime();
-	if((request==0)&&timeleft>=0)
-		timeleft--;
+	if(request==0)
+		{
+			if(timeleft>=0)
+				timeleft--;
+			#ifndef  BCC_BLOCK_IGNORE
+					asm int 60h;
+			#endif
+			tick();
+		}
 	if(timeleft==0||request)
 	{
 #ifndef BCC_BLOCK_IGNORE
@@ -66,17 +73,11 @@ void interrupt Context::timer(...) {
 		}
 #endif
 	}
-		if (request==0) {
-		#ifndef  BCC_BLOCK_IGNORE
-				asm int 60h;
-				tick();
-		#endif
-		}
 		request=0;
 }
 
 void Context::init() {
-	PCB::main = (new Thread(150, 5))->getMyPCB();
+	PCB::main = (new Thread(300, 5))->getMyPCB();
 	PCB::main->setMyThreadState(PCB::RUNNING);
 	PCB::running = PCB::main;
 	PCB::idle = (new Idle())->getMyPCB();
@@ -93,13 +94,13 @@ void Context::init() {
 }
 
 void Context::restore() {
+	delete PCB::idle->getMyThread();
+	delete PCB::main->getMyThread();
 #ifndef BCC_BLOCK_IGNORE
 	asm cli
 	setvect(0x08,timerRoutine);
 	asm sti
 #endif
-	delete PCB::idle->getMyThread();
-	delete PCB::main->getMyThread();
 	PCB::idle = 0;
 	PCB::main = 0;
 	PCB::listAll = 0;

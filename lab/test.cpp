@@ -1,8 +1,13 @@
 #include "thread.h"
 #include "pcb.h"
+#include "semaphor.h"
 #include <DOS.H>
 #include <STDIO.H>
 #include <STDARG.H>
+#include <stdlib.h>
+#include <iostream.h>
+#include <event.h>
+#include <ivtentry.h>
 
 int syncPrintf(const char *format, ...)
 {
@@ -15,10 +20,10 @@ int syncPrintf(const char *format, ...)
 }
 
 /*
-	Test: dohvatanje i pretraga po ID
+	Test: Niti maxStack velicine
 */
 
-const int n = 16;
+const int n = 2;
 
 void tick(){}
 
@@ -26,7 +31,7 @@ class TestThread : public Thread
 {
 public:
 
-	TestThread(): Thread(4096,2) {};
+	TestThread(): Thread(32768,2) {};
 	~TestThread()
 	{
 		waitToComplete();
@@ -68,7 +73,7 @@ int userMain(int argc, char** argv)
 	for(i=0;i<n;i++)
 	{
 		threads[i].waitToComplete();
-		syncPrintf("%d. Done!\n",Thread::getThreadById(i+3)->getId());
+		syncPrintf("%d. Done!\n",Thread::getThreadById(i)->getId());
 	}
 	syncPrintf("Test ends.\n");
 	return 0;

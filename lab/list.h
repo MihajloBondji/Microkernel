@@ -32,7 +32,7 @@ public:
 	pcbelem *first;
 	pcbelem *last;
 
-	void add(PCB* pcb);
+	void add(PCB* pcb,Time mw=0);
 	PCB* get(int id);
 	void freeBlocked();
 	PCB* remove();

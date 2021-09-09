@@ -10,14 +10,17 @@
 #include "contex.h"
 #include "pcb.h"
 #include "list.h"
+#include <stdio.h>
 
 volatile ID Thread::id = 1;
 
 
 Thread::Thread(StackSize stackSize,Time timeSlice){
-	myPCB=new PCB(this,stackSize,timeSlice);
-	myWaitingList=new List();
 	myID=id++;
+	myWaitingList=new List();
+	myPCB=new PCB(this,stackSize,timeSlice);
+
+
 }
 
 void Thread::start() {

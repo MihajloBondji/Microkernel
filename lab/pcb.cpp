@@ -67,7 +67,7 @@ void PCB::setMyThreadState(PCB::state s){
 
 void PCB::wrapper() {
 	PCB::running->myThread->run();
-	PCB::running->listAll->freeBlocked();
+	PCB::running->myThread->myWaitingList->freeBlocked();
 	PCB::running->myThreadState=DONE;
 	dispatch();
 }

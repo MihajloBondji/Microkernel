@@ -10,6 +10,7 @@
 #include "Thread.h"
 #include "pcb.h"
 #include "SCHEDULE.h"
+#include <stdio.h>
 
 ListSem* KerSem::listAllSem=new ListSem();
 
@@ -26,7 +27,7 @@ int KerSem::wait(Time maxWait){
 		asm {pushf;cli};
 #endif
 	PCB::running->setMyThreadState(PCB::BLOCKED);
-	this->blockedThreadsList->add(PCB::running);
+	this->blockedThreadsList->add(PCB::running,maxWait);
 #ifndef BCC_BLOCK_IGNORE
 		asm {popf};
 #endif
@@ -96,10 +97,14 @@ void KerSem::updateTime2(){
 			pom->maxWait--;
 			if(pom->maxWait==0)
 			{
+				pom->data->setMyThreadState(PCB::READY);
 				Scheduler::put(pom->data);
-				blockedThreadsList->remove(pom->data->getThreadId());
+				List::pcbelem* pom2=pom;
+				pom=pom->next;
+				blockedThreadsList->remove(pom2->data->getThreadId());
 			}
+			else{pom=pom->next;}
 		}
-		pom=pom->next;
+		else pom=pom->next;
 	}
 }

@@ -11,6 +11,7 @@
 #include "thread.h"
 #include "idle.h"
 #include "KerSem.h"
+#include <stdio.h>
 
 extern void tick();
 unsigned tmpsp=0;
@@ -21,10 +22,11 @@ volatile int Context::request=0;
 volatile int Context::timeleft=0;
 
 void interrupt Context::timer(...) {
-	KerSem::updateTime();
+
 	if(request==0)
 		{
-			if(timeleft>=0)
+		KerSem::updateTime();
+		if(timeleft>=0)
 				timeleft--;
 			#ifndef  BCC_BLOCK_IGNORE
 					asm int 60h;

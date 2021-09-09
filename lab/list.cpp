@@ -9,6 +9,7 @@
 #include "thread.h"
 #include "pcb.h"
 #include "SCHEDULE.H"
+#include <stdio.h>
 
 
 List::List() {
@@ -81,7 +82,7 @@ void List::freeBlocked(){
 			Scheduler::put(tek->data);
 		}
 	}
-
+	deleteList();
 }
 
 void List::deleteList(){
@@ -100,14 +101,14 @@ List::~List() {
 	deleteList();
 }
 
-void List::add(PCB* pcb){
+void List::add(PCB* pcb,Time maxWait){
 	if(first)
 		{
-			last->next=new pcbelem(pcb);
+			last->next=new pcbelem(pcb,maxWait);
 			last=last->next;
 		}
 	else {
-		first=last=new pcbelem(pcb);
+		first=last=new pcbelem(pcb,maxWait);
 	}
 }
 

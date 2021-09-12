@@ -37,9 +37,9 @@ int KerSem::wait(Time maxWait){
 	if(PCB::running->imFromWaitTimeOut==1)
 	{
 		PCB::running->imFromWaitTimeOut=0;
-		return 1;
+		return 0;
 	}
-	return 0;
+	return 1;
 }
 
 int KerSem::signal(int n){

@@ -44,7 +44,10 @@ IVTEntry::~IVTEntry() {
 	if(ivtNo!=0)ivtNo = 0;
 	asm {popf};
 	#endif
-	if(defaultRoutine!=0)defaultRoutine = 0;
+	if(defaultRoutine!=0){
+		defaultRoutine();
+		defaultRoutine = 0;
+	}
 	if(myKernelEvent!=0)myKernelEvent = 0;
 }
 void IVTEntry::signal() {

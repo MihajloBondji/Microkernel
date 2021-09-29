@@ -19,6 +19,7 @@ public:
 
 static void init();
 static void restore();
+static void setRunning();
 
 friend class PCB;
 friend class Thread;

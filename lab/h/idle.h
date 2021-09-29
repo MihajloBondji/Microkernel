@@ -13,7 +13,7 @@
 class Idle :public Thread{
 public:
 	friend class Context;
-	Idle():Thread(defaultStackSize,1){};
+	Idle();
 protected:
   void run();
   void start();

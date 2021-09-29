@@ -79,11 +79,9 @@ void interrupt Context::timer(...) {
 }
 
 void Context::init() {
-	PCB::main = (new Thread(300, 5))->getMyPCB();
-	PCB::main->setMyThreadState(PCB::RUNNING);
-	PCB::running = PCB::main;
+	setRunning();
+
 	PCB::idle = (new Idle())->getMyPCB();
-	PCB::idle->setMyThreadState(PCB::IDLE);
 	timeleft = PCB::main->getMyThreadTimeSlice();
 
 #ifndef BCC_BLOCK_IGNORE
@@ -107,4 +105,10 @@ void Context::restore() {
 	PCB::main = 0;
 	PCB::listAll = 0;
 	PCB::running = 0;
+}
+
+void Context::setRunning(){
+	PCB::main = (new Thread(300, 5))->getMyPCB();
+	PCB::main->setMyThreadState(PCB::RUNNING);
+	PCB::running = PCB::main;
 }
